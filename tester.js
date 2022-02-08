@@ -1,4 +1,5 @@
 let CrimsonQ = require("./lib/crimsonq");
+let Messages = require('./lib/recvdMsg');
 
 async function main() {
 
@@ -6,27 +7,22 @@ async function main() {
         port: 9001, // Redis port
         host: "127.0.0.1", // Redis host
         password: "crimsonQ!",
+    });
+    await CQ.connect();
+
+    let producer = await CQ.Producer();
+    let consumer = await CQ.Consumer("g");
+    await consumer.init(["/wadi/ywadi", "/nestrom/ceo"], 1);
+    consumer.events.on("message", async function (msg) {
+        try {
+                await msg.done()
+        } catch (e) {
+            console.error(e);
+        }
     })
-    await CQ.connect()
-    let producer = await CQ.Producer()
-    let consumer = await CQ.Consumer("yousef").init(["/wadi/yousef", "/nestrom/ceo"], 2)
-
-    consumer.events.on("message", function (msg) {
-        //console.log(">>>",msg)
-        msg.fail("A BIG ERROR")
-    })
-
-    // let CQ = await cqClient.init()
-    // let Producer = new CQ.Producer(cqClient)
-
-    // let Consumer = new CQ.Consumer(cqClient)
-    // await Consumer.init('yousef', "/wadi/yousef", 2)
-    // // console.log(await Consumer.setConsumerTopics( "/dev/"))
-    // // console.log(await Consumer.getConsumerTopics( "/dev/"))
-    // Producer.pushToConsumer("yousef",{today:Date.now()})
-    // console.log(await Consumer.pull())
-    // Consumer.Subscribe()
-    // console.log(await Consumer.retryMessages())
+    for (var x = 0; x < 10; x++) {
+        await producer.pushToConsumer(consumer.consumerId, JSON.stringify({ messageData: `New Message added => ${x}` }))
+    }
 }
 
 main()
