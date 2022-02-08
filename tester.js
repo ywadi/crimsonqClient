@@ -1,5 +1,4 @@
 let CrimsonQ = require("./lib/crimsonq");
-let Messages = require('./lib/recvdMsg');
 
 async function main() {
 
