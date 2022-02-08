@@ -1,5 +1,9 @@
 {
   "dependencies": {
     "ioredis": "^4.28.5"
+  },
+  "devDependencies": {
+    "jsdoc-md": "^11.0.2",
+    "jsdoc-to-markdown": "^7.1.1"
   }
 }
