@@ -1,41 +1,148 @@
 ## Classes
 
 <dl>
-<dt><a href="#CrimsonQClient">CrimsonQClient</a></dt>
-<dd><p>The Class Object for the CrimsonQ Client</p>
+<dt><a href="#Consumer">Consumer</a></dt>
+<dd><p>The Consumer Class Object creates a consumer class that exposes consumer functions.</p>
 </dd>
 <dt><a href="#Producer">Producer</a></dt>
 <dd><p>The Producer Class Object creates a Producer class that exposes producer functions.</p>
 </dd>
+<dt><a href="#RecievedMessage">RecievedMessage</a></dt>
+<dd><p>The messages Class Object creates a messages class that exposes messages functions.</p>
+</dd>
 </dl>
 
-<a name="CrimsonQClient"></a>
+<a name="Consumer"></a>
 
-## CrimsonQClient
-The Class Object for the CrimsonQ Client
+## Consumer
+The Consumer Class Object creates a consumer class that exposes consumer functions.
 
 **Kind**: global class  
 
-* [CrimsonQClient](#CrimsonQClient)
-    * [new CrimsonQClient(settings)](#new_CrimsonQClient_new)
-    * [.init()](#CrimsonQClient+init)
+* [Consumer](#Consumer)
+    * [.init(consumerId, topics, concurrency)](#Consumer+init)
+    * [.getTopics()](#Consumer+getTopics)
+    * [.setTopics(topics)](#Consumer+setTopics)
+    * [.messageCountByStatus()](#Consumer+messageCountByStatus)
+    * [.pull()](#Consumer+pull)
+    * [.completeMessage(messageId)](#Consumer+completeMessage)
+    * [.flushMessages(status)](#Consumer+flushMessages)
+    * [.retryMessages(messageId)](#Consumer+retryMessages)
+    * [.failMessage(messageId, errorMessage)](#Consumer+failMessage)
+    * [.updateConcurrency(concurrency)](#Consumer+updateConcurrency)
+    * [.concurrencyOk()](#Consumer+concurrencyOk) ⇒
+    * [.ping()](#Consumer+ping) ⇒
 
-<a name="new_CrimsonQClient_new"></a>
+<a name="Consumer+init"></a>
 
-### new CrimsonQClient(settings)
-Construct a new CrimsonQClient
+### consumer.init(consumerId, topics, concurrency)
+Initiate a consumer
 
+**Kind**: instance method of [<code>Consumer</code>](#Consumer)  
 
 | Param | Type | Description |
 | --- | --- | --- |
-| settings | <code>object</code> | The settings for the CrimsonQ connection as {url:"crimsonq://:crimsonQ!@127.0.0.1:9001"} |
+| consumerId | <code>String</code> |  |
+| topics | <code>Array</code> | List of topics |
+| concurrency | <code>Number</code> | Consumer pull concurrency , if sent to 0 or -1 concurrency will be unlimited |
 
-<a name="CrimsonQClient+init"></a>
+<a name="Consumer+getTopics"></a>
 
-### crimsonQClient.init()
-Initiate the CrimsonQ client, gets the commands from the server and generates the commands as functions
+### consumer.getTopics()
+Get Consumer topics
 
-**Kind**: instance method of [<code>CrimsonQClient</code>](#CrimsonQClient)  
+**Kind**: instance method of [<code>Consumer</code>](#Consumer)  
+<a name="Consumer+setTopics"></a>
+
+### consumer.setTopics(topics)
+Update or set consumer topics
+
+**Kind**: instance method of [<code>Consumer</code>](#Consumer)  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| topics | <code>String</code> | List of all consumer topics comma separated with no spaces |
+
+<a name="Consumer+messageCountByStatus"></a>
+
+### consumer.messageCountByStatus()
+Get consumer messages counts grouped by status
+
+**Kind**: instance method of [<code>Consumer</code>](#Consumer)  
+<a name="Consumer+pull"></a>
+
+### consumer.pull()
+Pull Consumer Messages
+
+**Kind**: instance method of [<code>Consumer</code>](#Consumer)  
+<a name="Consumer+completeMessage"></a>
+
+### consumer.completeMessage(messageId)
+Complete a message from consumer
+
+**Kind**: instance method of [<code>Consumer</code>](#Consumer)  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| messageId | <code>String</code> | Message should be pulled first |
+
+<a name="Consumer+flushMessages"></a>
+
+### consumer.flushMessages(status)
+**Kind**: instance method of [<code>Consumer</code>](#Consumer)  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| status | <code>String</code> | status string  either failed or completed; |
+
+<a name="Consumer+retryMessages"></a>
+
+### consumer.retryMessages(messageId)
+Retry failed messages
+
+**Kind**: instance method of [<code>Consumer</code>](#Consumer)  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| messageId | <code>String</code> | retry failed message/messages if not sent it will retry all messages |
+
+<a name="Consumer+failMessage"></a>
+
+### consumer.failMessage(messageId, errorMessage)
+Change message status into failed
+
+**Kind**: instance method of [<code>Consumer</code>](#Consumer)  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| messageId | <code>String</code> |  |
+| errorMessage | <code>String</code> | Reason why this message set to failed |
+
+<a name="Consumer+updateConcurrency"></a>
+
+### consumer.updateConcurrency(concurrency)
+Change consumer concurrency
+
+**Kind**: instance method of [<code>Consumer</code>](#Consumer)  
+
+| Param | Type |
+| --- | --- |
+| concurrency | <code>Number</code> | 
+
+<a name="Consumer+concurrencyOk"></a>
+
+### consumer.concurrencyOk() ⇒
+Check concurrency status
+
+**Kind**: instance method of [<code>Consumer</code>](#Consumer)  
+**Returns**: Boolean  
+<a name="Consumer+ping"></a>
+
+### consumer.ping() ⇒
+The good old Ping with a message, helps you debug your connection.
+
+**Kind**: instance method of [<code>Consumer</code>](#Consumer)  
+**Returns**: Pong! CrimsonQ  
 <a name="Producer"></a>
 
 ## Producer
@@ -52,10 +159,12 @@ The Producer Class Object creates a Producer class that exposes producer functio
 <a name="new_Producer_new"></a>
 
 ### new Producer(cqClient)
+Constructor
+
 
 | Param | Type | Description |
 | --- | --- | --- |
-| cqClient | [<code>CrimsonQClient</code>](#CrimsonQClient) | The CrimsonQ client for Producer to use as a connection |
+| cqClient | <code>CrimsonQClient</code> | The CrimsonQ client for Producer to use as a connection |
 
 <a name="Producer+pushToConsumer"></a>
 
@@ -67,7 +176,7 @@ Send messages to the consumer queue
 | Param | Type | Description |
 | --- | --- | --- |
 | consumerId | <code>string</code> | The consumer Id that will recieve the message |
-| message | <code>string</code> | The message as a string |
+| message | <code>Object</code> | The message object that needs to be pushed to consumers |
 
 <a name="Producer+pushToTopic"></a>
 
@@ -79,7 +188,7 @@ Send message to the topic queue
 | Param | Type | Description |
 | --- | --- | --- |
 | topic | <code>string</code> | The topic that will be used to send to consumers listening to the topic. The topic can have MQTT style wildcards. |
-| message | <code>string</code> | The message as a string to be sent to the consumers |
+| message | <code>Object</code> | The message object that needs to be pushed to consumers |
 
 <a name="Producer+ping"></a>
 
@@ -88,3 +197,31 @@ The good old Ping with a message, helps you debug your connection.
 
 **Kind**: instance method of [<code>Producer</code>](#Producer)  
 **Returns**: Pong! CrimsonQ  
+<a name="RecievedMessage"></a>
+
+## RecievedMessage
+The messages Class Object creates a messages class that exposes messages functions.
+
+**Kind**: global class  
+
+* [RecievedMessage](#RecievedMessage)
+    * [.done()](#RecievedMessage+done)
+    * [.fail(errorMessage)](#RecievedMessage+fail)
+
+<a name="RecievedMessage+done"></a>
+
+### recievedMessage.done()
+Complete Message
+
+**Kind**: instance method of [<code>RecievedMessage</code>](#RecievedMessage)  
+<a name="RecievedMessage+fail"></a>
+
+### recievedMessage.fail(errorMessage)
+Set failed message
+
+**Kind**: instance method of [<code>RecievedMessage</code>](#RecievedMessage)  
+
+| Param | Type |
+| --- | --- |
+| errorMessage | <code>String</code> | 
+
