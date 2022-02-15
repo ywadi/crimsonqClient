@@ -35,7 +35,7 @@ Once required you will need to setup the connection as follows;
 #### As a Producer 
 To use the client as a Producer all you need to do is create a new producer for the client instance as follows;
 
-    let  producer = await  CQ.Producer();
+    let producer = CQ.Producer();
 
 Then you can use the producer to publish messages. There are 2 ways you can publish messages, either directly to a consumer on its id, or to multiple consumers through a MQTT like topic, [see MQTT topic matching for details.](https://subscription.packtpub.com/book/application_development/9781787287815/1/ch01lvl1sec18/understanding-wildcards)
 Below are the commands that can be used against  the __*producer*__
